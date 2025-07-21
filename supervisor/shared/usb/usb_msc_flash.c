@@ -248,6 +248,8 @@ bool tud_msc_is_writable_cb(uint8_t lun) {
         return false;
     }
 
+    return true;
+
     fs_user_mount_t *vfs = get_vfs(lun);
     if (vfs == NULL) {
         return false;
