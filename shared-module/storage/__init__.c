@@ -39,7 +39,7 @@ bool storage_usb_enabled(void) {
 
 static bool usb_drive_set_enabled(bool enabled) {
     // We can't change the descriptors once we're connected.
-    if (tud_connected()) {
+    if (tud_connected() && tud_inited()) {
         return false;
     }
     filesystem_set_internal_writable_by_usb(enabled);
