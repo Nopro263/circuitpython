@@ -52,6 +52,8 @@
 #define MP_BLOCKDEV_FLAG_CONCURRENT_WRITE_PROTECTED (0x0020)
 // Bit set when something has claimed the right to mutate the blockdev.
 #define MP_BLOCKDEV_FLAG_LOCKED (0x0040)
+// Bit set when the device should be hidden from usb
+#define MP_BLOCKDEV_FLAG_HIDDEN (0x0080)
 
 // constants for block protocol ioctl
 #define MP_BLOCKDEV_IOCTL_INIT          (1)

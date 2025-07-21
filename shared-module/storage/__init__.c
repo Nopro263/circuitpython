@@ -44,7 +44,7 @@ static bool usb_drive_set_enabled(bool enabled) {
     if (tud_connected() && tud_inited()) {
         return false;
     }
-    filesystem_set_internal_writable_by_usb(enabled);
+    filesystem_set_internal_writable_by_usb_ex(enabled, !enabled);
     storage_usb_is_enabled = enabled;
     return true;
 }
@@ -54,7 +54,7 @@ static bool usb_saves_set_enabled(bool enabled) {
     if (tud_connected() && tud_inited()) {
         return false;
     }
-    filesystem_set_saves_writable_by_usb(enabled);
+    filesystem_set_saves_writable_by_usb_ex(enabled, !enabled);
     storage_usb_saves_is_enabled = enabled;
     return true;
 }

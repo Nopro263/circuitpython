@@ -233,19 +233,25 @@ void PLACE_IN_ITCM(filesystem_flush)(void) {
     supervisor_flash_release_cache();
 }
 
-void filesystem_set_internal_writable_by_usb(bool writable) {
+void filesystem_set_internal_writable_by_usb_ex(bool writable, bool hidden) {
     fs_user_mount_t *vfs = &_circuitpy_usermount;
 
     filesystem_set_writable_by_usb(vfs, writable);
+    filesystem_set_hidden_from_usb(vfs, hidden);
 }
 
-void filesystem_set_saves_writable_by_usb(bool writable) {
+void filesystem_set_saves_writable_by_usb_ex(bool writable, bool hidden) {
     #if CIRCUITPY_SAVES_PARTITION_SIZE > 0
 
     fs_user_mount_t *vfs = &_saves_usermount;
 
     filesystem_set_writable_by_usb(vfs, writable);
+    filesystem_set_hidden_from_usb(vfs, hidden);
     #endif
+}
+
+void filesystem_set_internal_writable_by_usb(bool writeable) {
+    filesystem_set_internal_writable_by_usb_ex(writeable, false);
 }
 
 void filesystem_set_writable_by_usb(fs_user_mount_t *vfs, bool usb_writable) {
@@ -253,6 +259,14 @@ void filesystem_set_writable_by_usb(fs_user_mount_t *vfs, bool usb_writable) {
         vfs->blockdev.flags |= MP_BLOCKDEV_FLAG_USB_WRITABLE;
     } else {
         vfs->blockdev.flags &= ~MP_BLOCKDEV_FLAG_USB_WRITABLE;
+    }
+}
+
+void filesystem_set_hidden_from_usb(fs_user_mount_t *vfs, bool usb_hidden) {
+    if (usb_hidden) {
+        vfs->blockdev.flags |= MP_BLOCKDEV_FLAG_HIDDEN;
+    } else {
+        vfs->blockdev.flags &= ~MP_BLOCKDEV_FLAG_HIDDEN;
     }
 }
 

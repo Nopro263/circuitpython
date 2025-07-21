@@ -29,8 +29,15 @@ void filesystem_set_internal_writable_by_usb(bool writable) {
     return;
 }
 
-void filesystem_set_saves_writable_by_usb(bool writable) {
+void filesystem_set_internal_writable_by_usb_ex(bool writable, bool hidden) {
     (void)writable;
+    (void)hidden;
+    return;
+}
+
+void filesystem_set_saves_writable_by_usb_ex(bool writable, bool hidden) {
+    (void)writable;
+    (void)hidden;
     return;
 }
 

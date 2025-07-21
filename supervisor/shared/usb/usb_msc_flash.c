@@ -124,6 +124,9 @@ size_t usb_msc_add_descriptor(uint8_t *descriptor_buf, descriptor_counts_t *desc
 static fs_user_mount_t *get_vfs(int lun) {
     fs_user_mount_t *root = filesystem_circuitpy();
     if (lun == 0) {
+        if ((root->blockdev.flags & MP_BLOCKDEV_FLAG_HIDDEN) != 0) {
+            return NULL;
+        }
         return root;
     }
     // Other filesystems must be native because we don't guard against exceptions.
@@ -133,6 +136,9 @@ static fs_user_mount_t *get_vfs(int lun) {
         const char *path_under_mount;
         fs_user_mount_t *saves = filesystem_for_path("/saves", &path_under_mount);
         if (saves != root && (saves->blockdev.flags & MP_BLOCKDEV_FLAG_NATIVE) != 0 && gc_nbytes(saves) == 0) {
+            if ((saves->blockdev.flags & MP_BLOCKDEV_FLAG_HIDDEN) != 0) {
+                return NULL;
+            }
             return saves;
         }
     }
@@ -142,6 +148,9 @@ static fs_user_mount_t *get_vfs(int lun) {
         const char *path_under_mount;
         fs_user_mount_t *sdcard = filesystem_for_path("/sd", &path_under_mount);
         if (sdcard != root && (sdcard->blockdev.flags & MP_BLOCKDEV_FLAG_NATIVE) != 0) {
+            if ((sdcard->blockdev.flags & MP_BLOCKDEV_FLAG_HIDDEN) != 0) {
+                return NULL;
+            }
             return sdcard;
         } else {
             // Clear any ejected state so that a re-insert causes it to reappear.
