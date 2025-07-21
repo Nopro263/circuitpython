@@ -42,6 +42,8 @@
 
 #include "tusb.h"
 
+bool has_inited = false;
+
 #if CFG_TUSB_OS == OPT_OS_ZEPHYR
 #include <zephyr/kernel.h>
 int CFG_TUSB_DEBUG_PRINTF(const char *format, ...) {
@@ -127,7 +129,11 @@ void usb_init(void) {
     tud_init(TUD_OPT_RHPORT);
     #endif
 
-    post_usb_init();
+    if (!has_inited) {
+        post_usb_init();
+    }
+
+    has_inited = true;
 
     #if MICROPY_KBD_EXCEPTION && CIRCUITPY_USB_DEVICE && CIRCUITPY_USB_CDC
     // Set Ctrl+C as wanted char, tud_cdc_rx_wanted_cb() usb_callback will be invoked when Ctrl+C is received
