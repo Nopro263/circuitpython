@@ -48,9 +48,9 @@ static interface_string_t collected_interface_strings[MAX_INTERFACE_STRINGS];
 static size_t collected_interface_strings_length;
 static uint8_t current_interface_string;
 
-static uint8_t *device_descriptor;
-static uint8_t *configuration_descriptor;
-static uint16_t *string_descriptors;
+static uint8_t *device_descriptor = NULL;
+static uint8_t *configuration_descriptor = NULL;
+static uint16_t *string_descriptors = NULL;
 
 // Serial number string is UID length * 2 (2 nibbles per byte) + 1 byte for null termination.
 static char serial_number_hex_string[COMMON_HAL_MCU_PROCESSOR_UID_LENGTH * 2 + 1];
@@ -94,6 +94,9 @@ static const uint8_t configuration_descriptor_template[] = {
 };
 
 static bool usb_build_device_descriptor(const usb_identification_t *identification) {
+    if (device_descriptor != NULL) {
+        port_free(device_descriptor);
+    }
     device_descriptor =
         (uint8_t *)port_malloc(sizeof(device_descriptor_template),
             /*dma_capable*/ false);
@@ -171,6 +174,10 @@ static bool usb_build_configuration_descriptor(void) {
     #endif
 
     // Now we know how big the configuration descriptor will be, so we can allocate space for it.
+    if (configuration_descriptor != NULL) {
+        port_free(configuration_descriptor);
+    }
+
     configuration_descriptor =
         (uint8_t *)port_malloc(total_descriptor_length,
             /*dma_capable*/ false);
@@ -289,6 +296,10 @@ static const uint16_t language_id[] = {
 static bool usb_build_interface_string_table(void) {
     // Allocate space for the le16 String descriptors.
     // Space needed is 2 bytes for String Descriptor header, then 2 bytes for each character
+    if (string_descriptors != NULL) {
+        port_free(string_descriptors);
+    }
+
     string_descriptors =
         port_malloc(current_interface_string * 2 + collected_interface_strings_length * 2,
             /*dma_capable*/ false);
