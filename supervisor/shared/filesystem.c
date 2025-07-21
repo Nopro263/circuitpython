@@ -239,6 +239,15 @@ void filesystem_set_internal_writable_by_usb(bool writable) {
     filesystem_set_writable_by_usb(vfs, writable);
 }
 
+void filesystem_set_saves_writable_by_usb(bool writable) {
+    #if CIRCUITPY_SAVES_PARTITION_SIZE > 0
+
+    fs_user_mount_t *vfs = &_saves_usermount;
+
+    filesystem_set_writable_by_usb(vfs, writable);
+    #endif
+}
+
 void filesystem_set_writable_by_usb(fs_user_mount_t *vfs, bool usb_writable) {
     if (usb_writable) {
         vfs->blockdev.flags |= MP_BLOCKDEV_FLAG_USB_WRITABLE;

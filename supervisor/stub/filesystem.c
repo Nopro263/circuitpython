@@ -29,6 +29,11 @@ void filesystem_set_internal_writable_by_usb(bool writable) {
     return;
 }
 
+void filesystem_set_saves_writable_by_usb(bool writable) {
+    (void)writable;
+    return;
+}
+
 void filesystem_set_writable_by_usb(fs_user_mount_t *vfs, bool usb_writable) {
     (void)vfs;
     (void)usb_writable;

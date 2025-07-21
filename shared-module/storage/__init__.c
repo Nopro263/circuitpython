@@ -28,13 +28,15 @@
 
 // Is the MSC device enabled?
 bool storage_usb_is_enabled;
+bool storage_usb_saves_is_enabled;
 
 void storage_usb_set_defaults(void) {
     storage_usb_is_enabled = CIRCUITPY_USB_MSC_ENABLED_DEFAULT;
+    storage_usb_saves_is_enabled = CIRCUITPY_USB_MSC_ENABLED_DEFAULT;
 }
 
 bool storage_usb_enabled(void) {
-    return storage_usb_is_enabled;
+    return storage_usb_is_enabled || storage_usb_saves_is_enabled;
 }
 
 static bool usb_drive_set_enabled(bool enabled) {
@@ -47,6 +49,17 @@ static bool usb_drive_set_enabled(bool enabled) {
     return true;
 }
 
+static bool usb_saves_set_enabled(bool enabled) {
+    // We can't change the descriptors once we're connected.
+    if (tud_connected() && tud_inited()) {
+        return false;
+    }
+    filesystem_set_saves_writable_by_usb(enabled);
+    storage_usb_saves_is_enabled = enabled;
+    return true;
+}
+
+
 bool common_hal_storage_disable_usb_drive(void) {
     return usb_drive_set_enabled(false);
 }
@@ -54,12 +67,27 @@ bool common_hal_storage_disable_usb_drive(void) {
 bool common_hal_storage_enable_usb_drive(void) {
     return usb_drive_set_enabled(true);
 }
+
+bool common_hal_storage_disable_saves_usb_drive(void) {
+    return usb_saves_set_enabled(false);
+}
+
+bool common_hal_storage_enable_saves_usb_drive(void) {
+    return usb_saves_set_enabled(true);
+}
 #else
 bool common_hal_storage_disable_usb_drive(void) {
     return false;
 }
 
 bool common_hal_storage_enable_usb_drive(void) {
+    return false;
+}
+bool common_hal_storage_disable_saves_usb_drive(void) {
+    return false;
+}
+
+bool common_hal_storage_enable_saves_usb_drive(void) {
     return false;
 }
 #endif // CIRCUITPY_USB_MSC

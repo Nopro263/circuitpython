@@ -18,6 +18,7 @@ bool filesystem_init(bool create_allowed, bool force_create);
 void filesystem_flush(void);
 bool filesystem_present(void);
 void filesystem_set_internal_writable_by_usb(bool usb_writable);
+void filesystem_set_saves_writable_by_usb(bool writable);
 void filesystem_set_internal_concurrent_write_protection(bool concurrent_write_protection);
 void filesystem_set_writable_by_usb(fs_user_mount_t *vfs, bool usb_writable);
 void filesystem_set_concurrent_write_protection(fs_user_mount_t *vfs, bool concurrent_write_protection);
