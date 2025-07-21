@@ -90,6 +90,12 @@ bool usb_enabled(void) {
 MP_WEAK void post_usb_init(void) {
 }
 
+void usb_deinit(void) {
+    #if CIRCUITPY_USB_DEVICE
+    tud_deinit(TUD_OPT_RHPORT);
+    #endif
+}
+
 void usb_init(void) {
     #if CIRCUITPY_USB_DEVICE
     usb_identification_t defaults;

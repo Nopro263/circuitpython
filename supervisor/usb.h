@@ -49,6 +49,8 @@ bool usb_enabled(void);
 void usb_add_interface_string(uint8_t interface_string_index, const char str[]);
 bool usb_build_descriptors(const usb_identification_t *identification);
 void usb_disconnect(void);
+void usb_connect(void);
+void usb_deinit(void);
 void usb_init(void);
 void usb_set_defaults(void);
 size_t usb_boot_py_data_size(void);

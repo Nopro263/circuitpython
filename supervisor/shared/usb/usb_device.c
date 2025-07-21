@@ -48,6 +48,10 @@ void usb_disconnect(void) {
     tud_disconnect();
 }
 
+void usb_connect(void) {
+    tud_connect();
+}
+
 // Invoked when device is mounted
 void tud_mount_cb(void) {
     #if CIRCUITPY_USB_MSC
