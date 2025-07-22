@@ -539,6 +539,7 @@ SRC_C += \
 	lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c \
 	lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c \
 	mphalport.c \
+	shared-bindings/unsafe/__init__.c \
 	$(SRC_CYW43) \
 	$(SRC_LWIP) \
 
