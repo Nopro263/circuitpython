@@ -158,7 +158,7 @@ bool filesystem_init(bool create_allowed, bool force_create) {
         if (res == FR_OK) {
             // Flush the new file system to make sure it's repaired immediately.
             supervisor_flash_flush();
-            res = f_setlabel(&saves->fatfs, "CPSAVES");
+            res = f_setlabel(&saves->fatfs, "DUCKY");
         }
 
         if (res == FR_OK) {
@@ -168,7 +168,7 @@ bool filesystem_init(bool create_allowed, bool force_create) {
         if (res == FR_OK) {
             MAKE_FILE_WITH_OPTIONAL_CONTENTS(&circuitpy->fatfs, "/saves/placeholder.txt",
                 "A separate filesystem mounted at /saves will hide this file from Python."
-                " Saves are visible via USB CPSAVES.\n");
+                " Saves are visible via USB DUCKY.\n");
         }
         #endif
         #endif
