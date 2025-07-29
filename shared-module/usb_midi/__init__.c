@@ -268,7 +268,7 @@ void usb_midi_setup_ports(void) {
 
 static bool usb_midi_set_enabled(bool enabled) {
     // We can't change the descriptors once we're connected.
-    if (tud_connected()) {
+    if (tud_connected() && tud_inited()) {
         return false;
     }
     usb_midi_is_enabled = enabled;

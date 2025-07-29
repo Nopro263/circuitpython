@@ -205,7 +205,7 @@ bool common_hal_usb_hid_disable(void) {
 
 bool common_hal_usb_hid_enable(const mp_obj_t devices, uint8_t boot_device) {
     // We can't change the devices once we're connected.
-    if (tud_connected()) {
+    if (tud_connected() && tud_inited()) {
         return false;
     }
 

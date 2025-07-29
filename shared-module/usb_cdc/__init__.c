@@ -223,7 +223,7 @@ bool common_hal_usb_cdc_disable(void) {
 
 bool common_hal_usb_cdc_enable(bool console, bool data) {
     // We can't change the descriptors once we're connected.
-    if (tud_connected()) {
+    if (tud_connected() && tud_inited()) {
         return false;
     }
 
